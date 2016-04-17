@@ -9,9 +9,5 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl:3.0.0a" level="project" />
-    <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl-platform:natives-windows:3.0.0a" level="project" />
-    <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl-platform:natives-linux:3.0.0a" level="project" />
-    <orderEntry type="library" name="Gradle: org.lwjgl:lwjgl-platform:natives-osx:3.0.0a" level="project" />
   </component>
 </module>
