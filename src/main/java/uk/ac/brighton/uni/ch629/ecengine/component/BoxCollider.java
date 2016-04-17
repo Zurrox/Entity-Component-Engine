@@ -8,7 +8,7 @@ import uk.ac.brighton.uni.ch629.ecengine.types.Circle2i;
 import java.util.UUID;
 
 public class BoxCollider extends CollisionComponent {
-    private Box2i box;
+    protected Box2i box;
 
     public BoxCollider(final World world, final UUID parentID, final int x, final int y, final int width, final int height) {
         super(world, parentID);

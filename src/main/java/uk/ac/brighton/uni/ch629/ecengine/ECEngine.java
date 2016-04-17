@@ -22,3 +22,4 @@ public class ECEngine {
 //TODO: Maybe a Game class or something (GameWindow?) for games to use, provide an Update, Render & Initialize loop
 //TODO: Catch duplicate events
 //TODO: Multithreading with events
+//TODO: Localization?
