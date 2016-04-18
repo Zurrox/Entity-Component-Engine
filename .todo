@@ -1,3 +1,19 @@
-[ ] Collisions
-[?] Localization
-[ ] Rendering - Swing or JavaFX (Swing I understand better, and can make my own rendering code)
+[~] Collisions:
+  [/] Broad Collisions
+  [ ] Narrow Collisions(Need to do circle with rectangle)
+[ ] Game States (Main menu state, game state etc)
+[~] Maybe a Game class or something (GameWindow?) for games to use, provide an Update, Render & Initialize loop:
+  [/] GameWindow
+  [ ] Update & Render Loop
+  [ ] Initialize Method
+[ ] Catch duplicate events
+[ ] Multithreading with events
+[ ] JavaDocs
+[ ] Differentiating between mouse buttons in MouseClickEvent
+============================================
+============================================
+[ ] Keycode to Name? Don't exactly need this as programmers can compare the event.keyCode to KeyCode.VK_W
+[ ] Maybe something in JSON to automate creation of some Entities
+[ ] Localization
+[ ] Localization?
+[ ] Networking
