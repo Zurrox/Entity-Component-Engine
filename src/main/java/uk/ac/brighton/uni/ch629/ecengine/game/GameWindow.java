@@ -1,17 +1,20 @@
 package uk.ac.brighton.uni.ch629.ecengine.game;
 
 import uk.ac.brighton.uni.ch629.ecengine.TestListener;
+import uk.ac.brighton.uni.ch629.ecengine.event.MouseClickEvent;
 import uk.ac.brighton.uni.ch629.ecengine.event.EventBus;
+import uk.ac.brighton.uni.ch629.ecengine.event.MouseScrollEvent;
+import uk.ac.brighton.uni.ch629.ecengine.misc.Debug;
 import uk.ac.brighton.uni.ch629.ecengine.misc.Keyboard;
+import uk.ac.brighton.uni.ch629.ecengine.misc.Mouse;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 
 public class GameWindow extends JFrame {
+    public final Keyboard KEYBOARD;
+    public final Mouse MOUSE;
 
     public GameWindow(String title, int width, int height) {
         super(title);
@@ -21,25 +24,29 @@ public class GameWindow extends JFrame {
         setVisible(true);
 
         final EventBus eventBus = new EventBus();
+        KEYBOARD = new Keyboard(eventBus);
+        MOUSE = new Mouse();
 
         TestListener tl = new TestListener(eventBus);
 
+
+        //TODO: Add the other Listener events & Maybe find a more elegant way to do this.
         addKeyListener(new KeyListener() {
             public void keyTyped(KeyEvent e) {
             }
 
             public void keyPressed(KeyEvent e) {
-                Keyboard.pressKey(e.getKeyCode(), eventBus);
+                KEYBOARD.pressKey(e.getKeyCode());
             }
 
-            public void keyReleased(KeyEvent e) { //TODO: Keyboard Events? onKeyPress & onKeyRelease -> Need reference to an EventBus
-                Keyboard.releaseKey(e.getKeyCode(), eventBus);
+            public void keyReleased(KeyEvent e) {
+                KEYBOARD.releaseKey(e.getKeyCode());
             }
         });
 
         addMouseListener(new MouseListener() {
             public void mouseClicked(MouseEvent e) {
-
+                eventBus.send(new MouseClickEvent(getMousePosition()));
             }
 
             public void mousePressed(MouseEvent e) {
@@ -56,6 +63,12 @@ public class GameWindow extends JFrame {
 
             public void mouseExited(MouseEvent e) {
 
+            }
+        });
+
+        addMouseWheelListener(new MouseWheelListener() {
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                eventBus.send(new MouseScrollEvent(e.getPoint(), e.getWheelRotation()));
             }
         });
     }

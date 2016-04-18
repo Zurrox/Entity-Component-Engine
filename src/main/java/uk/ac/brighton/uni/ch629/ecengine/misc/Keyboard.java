@@ -7,27 +7,32 @@ import uk.ac.brighton.uni.ch629.ecengine.event.KeyReleaseEvent;
 import java.util.*;
 
 public class Keyboard {
-    private static final Set<Integer> keysDown = new HashSet<Integer>();
+    private final Set<Integer> keysDown = new HashSet<Integer>();
+    private final EventBus eventBus;
 
-    public static void pressKey(int keyCode, EventBus bus) {
+    public Keyboard(EventBus bus) {
+        eventBus = bus;
+    }
+
+    public void pressKey(int keyCode) {
         //TODO: Figure a way out to implement the EventBus into this without needing it every time, maybe a new Keyboard controller for each GameWindow(Which would probably be right...)
         if(!keysDown.contains(keyCode)) {
             keysDown.add(keyCode);
-            bus.send(new KeyPressEvent(keyCode));
+            eventBus.send(new KeyPressEvent(keyCode));
         }
     }
 
-    public static void releaseKey(int keyCode, EventBus bus) {
-        if(keysDown.remove(keyCode) && bus != null) {
-            bus.send(new KeyReleaseEvent(keyCode));
+    public void releaseKey(int keyCode) {
+        if(keysDown.remove(keyCode) && eventBus != null) {
+            eventBus.send(new KeyReleaseEvent(keyCode));
         }
     }
 
-    public static Set<Integer> getKeysDown() {
+    public Set<Integer> getKeysDown() {
         return keysDown;
     }
 
-    public static boolean isKeyDown(int code) {
+    public boolean isKeyDown(int code) {
         return keysDown.contains(code);
     }
 }

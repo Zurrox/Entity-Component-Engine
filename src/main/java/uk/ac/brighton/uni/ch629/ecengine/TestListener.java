@@ -25,4 +25,14 @@ public class TestListener {
     public void onKeyType(KeyTypeEvent event) {
         Debug.println("onKeyType");
     }
+
+    @SubscribeEvent
+    public void onClick(MouseClickEvent event) {
+        Debug.println("Click @ " + event.pointClicked.toString());
+    }
+
+    @SubscribeEvent
+    public void onScroll(MouseScrollEvent event) {
+        Debug.println("Scroll: " + event.scroll);
+    }
 }

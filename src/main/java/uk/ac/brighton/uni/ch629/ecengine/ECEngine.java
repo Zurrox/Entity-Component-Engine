@@ -16,3 +16,6 @@ public class ECEngine {
 //TODO: Catch duplicate events
 //TODO: Multithreading with events
 //TODO: Localization?
+//TODO: Keycode to Name? Don't exactly need this as programmers can compare the event.keyCode to KeyCode.VK_W
+//TODO: JavaDocs
+//TODO: Networking
