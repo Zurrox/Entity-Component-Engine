@@ -6,10 +6,11 @@ import uk.ac.brighton.uni.ch629.ecengine.event.EventBus;
 import uk.ac.brighton.uni.ch629.ecengine.exceptions.DuplicateComponentException;
 import uk.ac.brighton.uni.ch629.ecengine.exceptions.DuplicateEntityException;
 import uk.ac.brighton.uni.ch629.ecengine.physics.CollisionHandler;
-import uk.ac.brighton.uni.ch629.ecengine.rendering.Graphics;
 
+import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.List;
 
 public class World {
     public final EventBus EVENT_BUS;

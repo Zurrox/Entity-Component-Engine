@@ -1,17 +1,10 @@
 package uk.ac.brighton.uni.ch629.ecengine;
 
-import javax.swing.*;
+import uk.ac.brighton.uni.ch629.ecengine.game.GameWindow;
 
 public class ECEngine {
     public static void main(String[] args) {
-        JFrame frame = new JFrame("ECEngine Test");
-        frame.setBounds(0, 0, 1024, 768);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-    }
-
-    public void start() {
-
+        new GameWindow("ECEngine Test", 1024, 768);
     }
 }
 //TODO: Game States (Main menu state, game state etc)
@@ -23,3 +16,4 @@ public class ECEngine {
 //TODO: Catch duplicate events
 //TODO: Multithreading with events
 //TODO: Localization?
+//TODO: Maybe use awt.Graphics rather than my own to interact directly with the window.
