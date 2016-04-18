@@ -4,8 +4,8 @@ import uk.ac.brighton.uni.ch629.ecengine.event.CollisionEvent;
 import uk.ac.brighton.uni.ch629.ecengine.event.SubscribeEvent;
 import uk.ac.brighton.uni.ch629.ecengine.event.SubscriptionClass;
 import uk.ac.brighton.uni.ch629.ecengine.logic.World;
-import uk.ac.brighton.uni.ch629.ecengine.rendering.Graphics;
 
+import java.awt.*;
 import java.util.UUID;
 
 public class HealthComponent extends Component {

@@ -1,9 +1,9 @@
 package uk.ac.brighton.uni.ch629.ecengine.component;
 
 import uk.ac.brighton.uni.ch629.ecengine.logic.World;
-import uk.ac.brighton.uni.ch629.ecengine.rendering.Graphics;
 import uk.ac.brighton.uni.ch629.ecengine.types.Vector2i;
 
+import java.awt.*;
 import java.util.UUID;
 
 public class TransformComponent extends Component {
