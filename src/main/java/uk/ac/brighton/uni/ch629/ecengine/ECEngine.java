@@ -16,4 +16,3 @@ public class ECEngine {
 //TODO: Catch duplicate events
 //TODO: Multithreading with events
 //TODO: Localization?
-//TODO: Maybe use awt.Graphics rather than my own to interact directly with the window.
