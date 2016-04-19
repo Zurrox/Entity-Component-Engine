@@ -15,7 +15,6 @@ public class Keyboard {
     }
 
     public void pressKey(int keyCode) {
-        //TODO: Figure a way out to implement the EventBus into this without needing it every time, maybe a new Keyboard controller for each GameWindow(Which would probably be right...)
         if(!keysDown.contains(keyCode)) {
             keysDown.add(keyCode);
             eventBus.send(new KeyPressEvent(keyCode));
