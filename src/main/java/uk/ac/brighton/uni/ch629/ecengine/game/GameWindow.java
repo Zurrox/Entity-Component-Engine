@@ -4,7 +4,6 @@ import uk.ac.brighton.uni.ch629.ecengine.TestListener;
 import uk.ac.brighton.uni.ch629.ecengine.event.MouseClickEvent;
 import uk.ac.brighton.uni.ch629.ecengine.event.EventBus;
 import uk.ac.brighton.uni.ch629.ecengine.event.MouseScrollEvent;
-import uk.ac.brighton.uni.ch629.ecengine.misc.Debug;
 import uk.ac.brighton.uni.ch629.ecengine.misc.Keyboard;
 import uk.ac.brighton.uni.ch629.ecengine.misc.Mouse;
 
@@ -12,10 +11,25 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * The Window for the game to be contained within.
+ */
 public class GameWindow extends JFrame {
+    /**
+     * The Keyboard Handler for this Window
+     */
     public final Keyboard KEYBOARD;
+    /**
+     * The Mouse Handler for this Window
+     */
     public final Mouse MOUSE;
 
+    /**
+     *
+     * @param title - The Title of the Window
+     * @param width - The Width of the Window
+     * @param height - The Height of the Window
+     */
     public GameWindow(String title, int width, int height) {
         super(title);
         setContentPane(new DrawPane());
@@ -74,6 +88,9 @@ public class GameWindow extends JFrame {
     }
 }
 
+/**
+ * The Pane within the JFrame to handle rendering objects
+ */
 class DrawPane extends JPanel {
     @Override
     public void paintComponent(Graphics graphics) {
