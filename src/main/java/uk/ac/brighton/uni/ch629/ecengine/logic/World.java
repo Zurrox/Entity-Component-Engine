@@ -34,26 +34,31 @@ public class World {
     /**
      * Updates all Entities(The Components)
      *
-     * @param g         The instance of Graphics to draw onto the Game Window
      * @param deltaTime The Delta Time since the last update frame
      */
-    public void updateAll(Graphics g, int deltaTime) { //TODO: Split into Render & Update
-        //TODO: Graphics could be held in the GameWindow which the World can hold.
-        //TODO: Could use an instance of time within the GameWindow which can then be used to get the deltaTime value
-        for (Entity entity : entities.values()) entity.update(g, deltaTime);
+    public void updateAll(int deltaTime) {
+        //TODO: Could use an instance of Time within the GameWindow which can then be used to get the deltaTime value
+        for (Entity entity : entities.values()) entity.update(deltaTime);
+    }
+
+    public void renderAll(Graphics graphics) {
+        for(Entity entity : entities.values()) entity.render(graphics);
+    }
+
+    public void render(UUID entityID, Graphics graphics) {
+        Entity entity = entities.get(entityID);
+        if(entity != null) entity.render(graphics);
     }
 
     /**
      * Updates a specific Entity
      *
      * @param entityID  The ID of the entity to update
-     * @param g         The instance of Graphics to draw onto the Game Window
      * @param deltaTime The Delta Time since the last update frame
      */
-    public void update(UUID entityID, Graphics g, int deltaTime) {
-        if (entities.containsKey(entityID)) {
-            entities.get(entityID).update(g, deltaTime);
-        }
+    public void update(UUID entityID, int deltaTime) {
+        Entity entity = entities.get(entityID);
+        if(entity != null) entity.update(deltaTime);
     }
 
     public void addEntity(Entity entity) {

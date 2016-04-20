@@ -47,8 +47,8 @@ public abstract class Component { //TODO: Maybe provide getComponent(Type), whic
     /**
      * Update the Component
      *
-     * @param g         Instance of Graphics to draw to the Game Window
      * @param deltaTime The Delta Time since the last frame.
      */
-    public abstract void update(Graphics g, int deltaTime); //TODO: Split to Render & Update (Update doesn't require Graphics
+    public abstract void update(int deltaTime);
+    public abstract void render(Graphics graphics);
 }

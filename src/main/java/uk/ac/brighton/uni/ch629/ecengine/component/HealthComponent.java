@@ -4,7 +4,6 @@ import uk.ac.brighton.uni.ch629.ecengine.entity.Entity;
 import uk.ac.brighton.uni.ch629.ecengine.event.CollisionEvent;
 import uk.ac.brighton.uni.ch629.ecengine.event.SubscribeEvent;
 import uk.ac.brighton.uni.ch629.ecengine.event.SubscriptionClass;
-import uk.ac.brighton.uni.ch629.ecengine.logic.World;
 
 import java.awt.*;
 import java.util.UUID;
@@ -15,6 +14,14 @@ public class HealthComponent extends Component {
 
     public HealthComponent(Entity parent) {
         this(parent, 100);
+    }
+
+    public void update(int deltaTime) {
+
+    }
+
+    public void render(Graphics graphics) {
+
     }
 
     public HealthComponent(Entity parent, int maxHealth) {
@@ -35,10 +42,6 @@ public class HealthComponent extends Component {
 
     public int getMaxHealth() {
         return maxHealth;
-    }
-
-    public void update(Graphics g, int deltaTime) {
-
     }
 
     @SubscribeEvent

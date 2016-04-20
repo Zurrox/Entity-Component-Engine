@@ -93,10 +93,12 @@ public class Entity {
         return null; //TODO: Implement
     }
 
-    public void update(Graphics graphics, int deltaTime) {
-        for (Component component : COMPONENTS) {
-            component.update(graphics, deltaTime);
-        }
+    public void update(int deltaTime) {
+        for (Component component : COMPONENTS) component.update(deltaTime);
+    }
+
+    public void render(Graphics graphics) {
+        for(Component component : COMPONENTS) component.render(graphics);
     }
 
     public UUID getID() {

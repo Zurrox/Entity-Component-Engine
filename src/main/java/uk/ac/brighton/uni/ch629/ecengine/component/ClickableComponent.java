@@ -11,7 +11,11 @@ public class ClickableComponent extends Component {
         super(parent);
     }
 
-    public void update(Graphics g, int deltaTime) {
+    public void update(int deltaTime) {
+
+    }
+
+    public void render(Graphics graphics) {
 
     }
 }
