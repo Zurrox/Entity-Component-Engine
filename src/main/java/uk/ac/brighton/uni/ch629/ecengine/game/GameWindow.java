@@ -4,7 +4,8 @@ import uk.ac.brighton.uni.ch629.ecengine.TestListener;
 import uk.ac.brighton.uni.ch629.ecengine.event.EventBus;
 import uk.ac.brighton.uni.ch629.ecengine.event.MouseClickEvent;
 import uk.ac.brighton.uni.ch629.ecengine.event.MouseScrollEvent;
-import uk.ac.brighton.uni.ch629.ecengine.logic.World;
+import uk.ac.brighton.uni.ch629.ecengine.logic.*;
+import uk.ac.brighton.uni.ch629.ecengine.logic.Timer;
 import uk.ac.brighton.uni.ch629.ecengine.misc.Keyboard;
 import uk.ac.brighton.uni.ch629.ecengine.misc.Mouse;
 
@@ -18,6 +19,7 @@ import java.util.List;
  * The Window for the game to be contained within.
  */
 public abstract class GameWindow extends JFrame {
+    public final Timer TIMER;
     /**
      * The Keyboard Handler for this Window
      */
@@ -44,6 +46,7 @@ public abstract class GameWindow extends JFrame {
         setVisible(true);
 
         final EventBus eventBus = new EventBus();
+        TIMER = new Timer();
         KEYBOARD = new Keyboard(eventBus);
         MOUSE = new Mouse();
         WORLDS = new ArrayList<World>();
@@ -94,9 +97,24 @@ public abstract class GameWindow extends JFrame {
         });
 
         initialize();
+
+        while(true) { //TODO: Threading. Game loop needs to be in own thread, and events need to be separated
+            double deltaTime = TIMER.getDeltaTimeMilli();
+            try {
+                if(deltaTime < 1) {
+                    Thread.sleep(1); //Avoids updating too fast
+                    deltaTime += TIMER.getDeltaTimeMilli();
+                }
+                update(deltaTime);
+                getContentPane().getGraphics().clearRect(0, 0, getWidth(), getHeight()); //TODO: Need to deal with this, makes boxes flash on screen.
+                render(getContentPane().getGraphics());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    public abstract void update(int deltaTime);
+    public abstract void update(double deltaTime);
 
     public abstract void render(Graphics g);
 
