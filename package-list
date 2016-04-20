@@ -1,6 +1,7 @@
 uk.ac.brighton.uni.ch629.ecengine
 uk.ac.brighton.uni.ch629.ecengine.colliders
 uk.ac.brighton.uni.ch629.ecengine.component
+uk.ac.brighton.uni.ch629.ecengine.entity
 uk.ac.brighton.uni.ch629.ecengine.event
 uk.ac.brighton.uni.ch629.ecengine.exceptions
 uk.ac.brighton.uni.ch629.ecengine.game
