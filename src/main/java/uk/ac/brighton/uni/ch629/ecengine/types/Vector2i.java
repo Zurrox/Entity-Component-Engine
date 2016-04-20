@@ -18,7 +18,7 @@ public class Vector2i {
         this.y = y;
     }
 
-    public void move(final int x, final int y) {
+    public void move(final int x, final int y) {//TODO: Maybe use Translate instead.
         this.x += x;
         this.y += y;
     }
@@ -46,5 +46,9 @@ public class Vector2i {
 
     public double getDistance(final Vector2i other) {
         return Math.sqrt((this.x - other.x) * (this.x - other.x) + (this.y - other.y) * (this.y - other.y));
+    }
+
+    public static Vector2i zero() {
+        return new Vector2i(0, 0);
     }
 }

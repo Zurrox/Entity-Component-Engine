@@ -16,7 +16,7 @@ public class CollisionEvent implements IEvent {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof  CollisionEvent) {
+        if (obj instanceof CollisionEvent) {
             return ((CollisionEvent) obj).entity1 == entity1 && ((CollisionEvent) obj).entity2 == entity2 ||
                     ((CollisionEvent) obj).entity2 == entity1 && ((CollisionEvent) obj).entity1 == entity2;
         }

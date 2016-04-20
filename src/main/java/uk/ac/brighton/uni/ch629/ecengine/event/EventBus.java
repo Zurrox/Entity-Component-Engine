@@ -17,7 +17,7 @@ public class EventBus {
     }
 
     public <T> SubscriptionClass<T> registerListenerClass(Class<T> clazz) {
-        if(!subscribedClasses.containsKey(clazz)) {
+        if (!subscribedClasses.containsKey(clazz)) {
             SubscriptionClass<T> subscriptionClass = new SubscriptionClass<T>();
             for (Method mtd : clazz.getMethods()) {
                 Annotation[] annotations = mtd.getDeclaredAnnotations();
@@ -40,7 +40,7 @@ public class EventBus {
     }
 
     public void subscribeObject(Object o) {
-        if(subscribedClasses.containsKey(o.getClass())) subscribedClasses.get(o.getClass()).subscribe(o);
+        if (subscribedClasses.containsKey(o.getClass())) subscribedClasses.get(o.getClass()).subscribe(o);
     }
 
     public void subscribeEvent(Method mtd) {
@@ -58,7 +58,7 @@ public class EventBus {
     }
 
     public void unsubscribeObject(Object o) {
-        if(subscribedClasses.containsKey(o.getClass())) subscribedClasses.get(o.getClass()).unsubscribe(o);
+        if (subscribedClasses.containsKey(o.getClass())) subscribedClasses.get(o.getClass()).unsubscribe(o);
     }
 
     public void send(IEvent event) {

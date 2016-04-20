@@ -1,20 +1,23 @@
 package uk.ac.brighton.uni.ch629.ecengine.game;
 
 import uk.ac.brighton.uni.ch629.ecengine.TestListener;
-import uk.ac.brighton.uni.ch629.ecengine.event.MouseClickEvent;
 import uk.ac.brighton.uni.ch629.ecengine.event.EventBus;
+import uk.ac.brighton.uni.ch629.ecengine.event.MouseClickEvent;
 import uk.ac.brighton.uni.ch629.ecengine.event.MouseScrollEvent;
+import uk.ac.brighton.uni.ch629.ecengine.logic.World;
 import uk.ac.brighton.uni.ch629.ecengine.misc.Keyboard;
 import uk.ac.brighton.uni.ch629.ecengine.misc.Mouse;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Window for the game to be contained within.
  */
-public class GameWindow extends JFrame {
+public abstract class GameWindow extends JFrame {
     /**
      * The Keyboard Handler for this Window
      */
@@ -24,10 +27,13 @@ public class GameWindow extends JFrame {
      */
     public final Mouse MOUSE;
 
+    public final List<World> WORLDS;
+
+    public World currentWorld; //TODO: Maybe hold GameState and just have a reference to World through that(GameWindow.getCurrentWorld())
+
     /**
-     *
-     * @param title - The Title of the Window
-     * @param width - The Width of the Window
+     * @param title  - The Title of the Window
+     * @param width  - The Width of the Window
      * @param height - The Height of the Window
      */
     public GameWindow(String title, int width, int height) {
@@ -40,6 +46,7 @@ public class GameWindow extends JFrame {
         final EventBus eventBus = new EventBus();
         KEYBOARD = new Keyboard(eventBus);
         MOUSE = new Mouse();
+        WORLDS = new ArrayList<World>();
 
         TestListener tl = new TestListener(eventBus);
 
@@ -85,7 +92,15 @@ public class GameWindow extends JFrame {
                 eventBus.send(new MouseScrollEvent(e.getPoint(), e.getWheelRotation()));
             }
         });
+
+        initialize();
     }
+
+    public abstract void update(int deltaTime);
+
+    public abstract void render(Graphics g);
+
+    public abstract void initialize();
 }
 
 /**
@@ -94,6 +109,6 @@ public class GameWindow extends JFrame {
 class DrawPane extends JPanel {
     @Override
     public void paintComponent(Graphics graphics) {
-        graphics.fillRect(20, 20, 100, 200);
+        //TODO: Render all components.
     }
 }

@@ -1,6 +1,7 @@
 package uk.ac.brighton.uni.ch629.ecengine.component;
 
 import uk.ac.brighton.uni.ch629.ecengine.colliders.ICollider;
+import uk.ac.brighton.uni.ch629.ecengine.entity.Entity;
 import uk.ac.brighton.uni.ch629.ecengine.logic.World;
 import uk.ac.brighton.uni.ch629.ecengine.types.Box2i;
 import uk.ac.brighton.uni.ch629.ecengine.types.Circle2i;
@@ -10,14 +11,14 @@ import java.util.UUID;
 public class CircleCollider extends CollisionComponent {
     public Circle2i circle;
 
-    public CircleCollider(World world, UUID parentID, int x, int y, int radius) {
-        super(world, parentID);
+    public CircleCollider(Entity parent, int x, int y, int radius) {
+        super(parent);
         circle = new Circle2i(x, y, radius);
     }
 
     public boolean intersects(ICollider other) { //FIXME: What can I do with this duplicate code?
-        if(other instanceof BoxCollider) return intersects(((BoxCollider) other).box);
-        else if(other instanceof CircleCollider) return intersects(((CircleCollider) other).circle);
+        if (other instanceof BoxCollider) return intersects(((BoxCollider) other).box);
+        else if (other instanceof CircleCollider) return intersects(((CircleCollider) other).circle);
         else return other.intersects(this);
     }
 

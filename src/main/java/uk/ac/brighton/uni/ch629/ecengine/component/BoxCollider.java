@@ -1,6 +1,7 @@
 package uk.ac.brighton.uni.ch629.ecengine.component;
 
 import uk.ac.brighton.uni.ch629.ecengine.colliders.ICollider;
+import uk.ac.brighton.uni.ch629.ecengine.entity.Entity;
 import uk.ac.brighton.uni.ch629.ecengine.logic.World;
 import uk.ac.brighton.uni.ch629.ecengine.types.Box2i;
 import uk.ac.brighton.uni.ch629.ecengine.types.Circle2i;
@@ -10,14 +11,18 @@ import java.util.UUID;
 public class BoxCollider extends CollisionComponent {
     protected Box2i box;
 
-    public BoxCollider(final World world, final UUID parentID, final int x, final int y, final int width, final int height) {
-        super(world, parentID);
+    public BoxCollider(Entity parent) {
+        this(parent, 0, 0, 1, 1);
+    }
+
+    public BoxCollider(Entity parent, int x, int y, int width, int height) {
+        super(parent);
         box = new Box2i(x, y, width, height);
     }
 
     public boolean intersects(ICollider other) {
-        if(other instanceof BoxCollider) return intersects(((BoxCollider)other).box);
-        else if(other instanceof CircleCollider) return intersects(((CircleCollider)other).circle);
+        if (other instanceof BoxCollider) return intersects(((BoxCollider) other).box);
+        else if (other instanceof CircleCollider) return intersects(((CircleCollider) other).circle);
         else return other.intersects(this); //TODO: Be careful with this, can easily cause a StackOverflowException
     }
 

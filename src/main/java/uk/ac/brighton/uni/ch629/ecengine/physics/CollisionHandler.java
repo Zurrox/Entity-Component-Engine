@@ -20,14 +20,16 @@ public class CollisionHandler {
 
     /**
      * Add a Collider to the list of Colliders
+     *
      * @param collider - Collider Component to be added
      */
     public void addCollider(CollisionComponent collider) {
-        if(!colliders.contains(collider)) colliders.add(collider);
+        if (!colliders.contains(collider)) colliders.add(collider);
     }
 
     /**
      * Remove a Collider from the list
+     *
      * @param collider The Collider Component to be removed
      * @return Whether the Collider was removed
      */
