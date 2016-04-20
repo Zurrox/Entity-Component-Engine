@@ -11,13 +11,15 @@ public abstract class CollisionComponent extends Component implements ICollider 
         super(parent);
     }
 
-    public void update(int deltaTime) {
+    @Override
+    public void update(double deltaTime) {
         for (CollisionComponent collider : getWorld().COLLISION_HANDLER.colliders) {
             if (collider != this && intersects(collider))
                 getWorld().EVENT_BUS.send(new CollisionEvent(parent.getID(), collider.getParent().getID())); //FIXME: Event is not being called correctly...
         }
     }
 
+    @Override
     public void render(Graphics graphics) {
 
     }

@@ -16,7 +16,7 @@ public class HealthComponent extends Component {
         this(parent, 100);
     }
 
-    public void update(int deltaTime) {
+    public void update(double deltaTime) {
 
     }
 

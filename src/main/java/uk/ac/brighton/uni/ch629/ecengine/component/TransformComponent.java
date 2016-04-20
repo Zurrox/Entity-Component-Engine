@@ -9,10 +9,10 @@ public class TransformComponent extends Component {
     public Vector2i pos;
 
     public TransformComponent(Entity parent) {
-        this(parent, Vector2i.zero());
+        this(parent, Vector2i.zero);
     }
 
-    public void update(int deltaTime) {
+    public void update(double deltaTime) {
 
     }
 
@@ -20,8 +20,13 @@ public class TransformComponent extends Component {
 
     }
 
-    public TransformComponent(Entity parent, final Vector2i pos) {
+    public TransformComponent(Entity parent, Vector2i pos) {
         super(parent);
         this.pos = pos;
+    }
+
+    public TransformComponent(Entity parent, int x, int y) {
+        super(parent);
+        pos = new Vector2i(x, y);
     }
 }

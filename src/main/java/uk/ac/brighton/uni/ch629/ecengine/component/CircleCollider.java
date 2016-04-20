@@ -11,6 +11,10 @@ import java.util.UUID;
 public class CircleCollider extends CollisionComponent {
     public Circle2i circle;
 
+    public CircleCollider(Entity parent) {
+        this(parent, 0, 0, 1);
+    }
+
     public CircleCollider(Entity parent, int x, int y, int radius) {
         super(parent);
         circle = new Circle2i(x, y, radius);

@@ -1,6 +1,7 @@
 package uk.ac.brighton.uni.ch629.ecengine.types;
 
 public class Vector2i {
+    public static final Vector2i zero = new Vector2i(0, 0);
     public int x, y;
 
     public Vector2i(final int x, int y) {
@@ -18,7 +19,7 @@ public class Vector2i {
         this.y = y;
     }
 
-    public void move(final int x, final int y) {//TODO: Maybe use Translate instead.
+    public void move(final double x, final double y) {//TODO: Maybe use Translate instead.
         this.x += x;
         this.y += y;
     }
@@ -28,7 +29,7 @@ public class Vector2i {
         this.y += pos.y;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
@@ -36,7 +37,7 @@ public class Vector2i {
         this.x = x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
@@ -46,9 +47,5 @@ public class Vector2i {
 
     public double getDistance(final Vector2i other) {
         return Math.sqrt((this.x - other.x) * (this.x - other.x) + (this.y - other.y) * (this.y - other.y));
-    }
-
-    public static Vector2i zero() {
-        return new Vector2i(0, 0);
     }
 }

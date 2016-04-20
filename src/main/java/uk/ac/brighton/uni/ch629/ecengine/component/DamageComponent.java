@@ -11,7 +11,7 @@ public class DamageComponent extends Component {
         this(parent, 1);
     }
 
-    public void update(int deltaTime) {
+    public void update(double deltaTime) {
 
     }
 

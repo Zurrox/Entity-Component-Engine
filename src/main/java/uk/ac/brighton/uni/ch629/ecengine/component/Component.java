@@ -49,6 +49,6 @@ public abstract class Component { //TODO: Maybe provide getComponent(Type), whic
      *
      * @param deltaTime The Delta Time since the last frame.
      */
-    public abstract void update(int deltaTime);
+    public abstract void update(double deltaTime);
     public abstract void render(Graphics graphics);
 }

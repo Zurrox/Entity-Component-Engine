@@ -13,12 +13,11 @@ public class ECEngine extends GameWindow {
         new ECEngine();
     }
 
-    public void update(int deltaTime) {
+    public void update(double deltaTime) {
 
     }
 
     public void render(Graphics g) {
-
     }
 
     public void initialize() {
@@ -28,7 +27,6 @@ public class ECEngine extends GameWindow {
 //TODO: Game States (Main menu state, game state etc)
 //TODO: Rendering Shapes
 //TODO: Graphics class allowing access directly to drawing to the Window
-//TODO: Update loop && Render?
 //TODO: Maybe something in JSON to automate creation of some Entities
 //TODO: Maybe a Game class or something (GameWindow?) for games to use, provide an Update, Render & Initialize loop
 //TODO: Catch duplicate events
@@ -39,3 +37,6 @@ public class ECEngine extends GameWindow {
 //TODO: Networking
 //TODO: Remove mainClass from Gradle when building.
 //TODO: Maybe some sort of blueprint for Entities to be created using.
+//TODO: Find some elegant way to create blueprint entities & also create any entity with some set values (Right now need to define either all as defaults or all as non-defaults)
+//TODO: Component Dependencies (Box Collider requires Transform)
+//TODO: Make all Updates use Double
