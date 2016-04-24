@@ -4,22 +4,26 @@ import uk.ac.brighton.uni.ch629.ecengine.TestListener;
 import uk.ac.brighton.uni.ch629.ecengine.event.EventBus;
 import uk.ac.brighton.uni.ch629.ecengine.event.MouseClickEvent;
 import uk.ac.brighton.uni.ch629.ecengine.event.MouseScrollEvent;
-import uk.ac.brighton.uni.ch629.ecengine.logic.*;
 import uk.ac.brighton.uni.ch629.ecengine.logic.Timer;
+import uk.ac.brighton.uni.ch629.ecengine.logic.World;
 import uk.ac.brighton.uni.ch629.ecengine.misc.Keyboard;
 import uk.ac.brighton.uni.ch629.ecengine.misc.Mouse;
+import uk.ac.brighton.uni.ch629.ecengine.misc.Settings;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * The Window for the game to be contained within.
  */
 public abstract class GameWindow extends JFrame {
+    public final HashMap<String, GameState> STATE_LIST;
     public final Timer TIMER;
+    public final Settings SETTINGS;
     /**
      * The Keyboard Handler for this Window
      */
@@ -28,31 +32,34 @@ public abstract class GameWindow extends JFrame {
      * The Mouse Handler for this Window
      */
     public final Mouse MOUSE;
-
     public final List<World> WORLDS;
-
+    public int currentState = 0;
     public World currentWorld; //TODO: Maybe hold GameState and just have a reference to World through that(GameWindow.getCurrentWorld())
+    private Image offBuffer = null;
 
     /**
-     * @param title  - The Title of the Window
-     * @param width  - The Width of the Window
-     * @param height - The Height of the Window
+     * @param title The Title of the Window
+     * @param width The Width of the Window
+     * @param height The Height of the Window
      */
     public GameWindow(String title, int width, int height) {
         super(title);
-        setContentPane(new DrawPane());
+        setContentPane(new JPanel());
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(width, height);
         setVisible(true);
 
         final EventBus eventBus = new EventBus();
+        SETTINGS = new Settings();
+        STATE_LIST = new HashMap<>();
         TIMER = new Timer();
         KEYBOARD = new Keyboard(eventBus);
         MOUSE = new Mouse();
-        WORLDS = new ArrayList<World>();
+        WORLDS = new ArrayList<>();
+
+        SETTINGS.setSetting("resources", "D:\\Programming\\Entity Component Engine\\Resources");
 
         TestListener tl = new TestListener(eventBus);
-
 
         //TODO: Add the other Listener events & Maybe find a more elegant way to do this.
         addKeyListener(new KeyListener() {
@@ -70,7 +77,7 @@ public abstract class GameWindow extends JFrame {
 
         addMouseListener(new MouseListener() {
             public void mouseClicked(MouseEvent e) {
-                eventBus.send(new MouseClickEvent(getMousePosition()));
+                eventBus.sendNow(new MouseClickEvent(getMousePosition(), e.getButton()));
             }
 
             public void mousePressed(MouseEvent e) {
@@ -92,41 +99,61 @@ public abstract class GameWindow extends JFrame {
 
         addMouseWheelListener(new MouseWheelListener() {
             public void mouseWheelMoved(MouseWheelEvent e) {
-                eventBus.send(new MouseScrollEvent(e.getPoint(), e.getWheelRotation()));
+                eventBus.sendNow(new MouseScrollEvent(e.getPoint(), e.getWheelRotation()));
             }
         });
 
         initialize();
 
-        while(true) { //TODO: Threading. Game loop needs to be in own thread, and events need to be separated
-            double deltaTime = TIMER.getDeltaTimeMilli();
-            try {
-                if(deltaTime < 1) {
-                    Thread.sleep(1); //Avoids updating too fast
-                    deltaTime += TIMER.getDeltaTimeMilli();
-                }
-                update(deltaTime);
-                getContentPane().getGraphics().clearRect(0, 0, getWidth(), getHeight()); //TODO: Need to deal with this, makes boxes flash on screen.
-                render(getContentPane().getGraphics());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        //TODO: Threading. Game loop needs to be in own thread, and events need to be separated
+
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                javax.swing.Timer tim = new javax.swing.Timer(1000 / 60, new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        offBuffer = createImage(getWidth(), getHeight());
+                        update(TIMER.getDeltaTimeMilli());
+                        currentWorld.EVENT_BUS.sendQueued(); //FIXME: IDK If this is where it should be, but it will send all queued events at the end of all updates in the current frame
+                        render(offBuffer.getGraphics());
+                        getCurrentBuffer().drawImage(offBuffer, 0, 0, getContentPane());
+                    }
+                });
+                tim.start();
             }
-        }
+        });
+        thread.start();
     }
 
-    public abstract void update(double deltaTime);
+    private Graphics getCurrentBuffer() {
+        return getContentPane().getGraphics();
+    }
 
-    public abstract void render(Graphics g);
+    public void addState(String name, GameState state) { //TODO: Maybe use a name reference to the GameState
+        STATE_LIST.put(name, state);
+        state.initialize();
+    }
+
+    public void removeState(String name) {
+        STATE_LIST.remove(name);
+    }
+
+    public void loadState(String name) {
+        //TODO: Implement
+    }
+
+    public GameState getState(String name) {
+        return STATE_LIST.get(name);
+    }
+
+    public void update(double deltaTime) {
+        GameState state = STATE_LIST.get(currentState);
+        if (!state.isPaused()) state.update(deltaTime);
+    }
+
+    public void render(Graphics g) {
+        GameState state = STATE_LIST.get(currentState);
+        if (!state.isPaused()) state.render(g);
+    }
 
     public abstract void initialize();
-}
-
-/**
- * The Pane within the JFrame to handle rendering objects
- */
-class DrawPane extends JPanel {
-    @Override
-    public void paintComponent(Graphics graphics) {
-        //TODO: Render all components.
-    }
 }
