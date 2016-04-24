@@ -19,9 +19,9 @@ public class World {
     public final EventBus EVENT_BUS;
     public final CollisionHandler COLLISION_HANDLER;
     public final GameWindow WINDOW;
-    UUID id;
     //TODO: Maybe use an Entity class to hold components, can make blueprints through that. Can also have Tags, ie to know which Entity is the Player
-    HashMap<UUID, Entity> entities;
+    public HashMap<UUID, Entity> entities;
+    UUID id;
 
     public World(final GameWindow window) {
         this.WINDOW = window;
