@@ -40,3 +40,4 @@ public class ECEngine extends GameWindow {
 //TODO: Find some elegant way to create blueprint entities & also create any entity with some set values (Right now need to define either all as defaults or all as non-defaults)
 //TODO: Component Dependencies (Box Collider requires Transform)
 //TODO: Make all Updates use Double
+//TODO: Overlays? Pause Menu -> Needs to pause main game when opened.
