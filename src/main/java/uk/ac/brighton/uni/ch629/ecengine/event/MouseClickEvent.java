@@ -4,8 +4,10 @@ import java.awt.*;
 
 public class MouseClickEvent implements IEvent {
     public Point pointClicked;
+    public int button;
 
-    public MouseClickEvent(final Point point) {
+    public MouseClickEvent(final Point point, final int button) {
         this.pointClicked = point;
+        this.button = button;
     }
 }
