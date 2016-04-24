@@ -213,13 +213,13 @@ public class Keyboard {
     public void pressKey(int keyCode) {
         if (!keysDown.contains(keyCode)) {
             keysDown.add(keyCode);
-            eventBus.send(new KeyPressEvent(keyCode));
+            eventBus.sendNow(new KeyPressEvent(keyCode));
         }
     }
 
     public void releaseKey(int keyCode) {
         if (keysDown.remove(keyCode) && eventBus != null) {
-            eventBus.send(new KeyReleaseEvent(keyCode));
+            eventBus.sendNow(new KeyReleaseEvent(keyCode));
         }
     }
 
