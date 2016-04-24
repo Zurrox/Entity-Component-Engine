@@ -4,11 +4,12 @@ import uk.ac.brighton.uni.ch629.ecengine.entity.Entity;
 import uk.ac.brighton.uni.ch629.ecengine.logic.World;
 
 import java.awt.*;
+import java.util.Observable;
 
 /**
  * A Component class for Entities to hold in order to do anything in the Engine
  */
-public abstract class Component { //TODO: Maybe provide getComponent(Type), which removes the need for using parentID
+public abstract class Component extends Observable {
     protected final Entity parent;
 
     public Component(Entity parent) {

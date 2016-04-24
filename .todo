@@ -14,6 +14,34 @@
 ============================================
 [ ] Keycode to Name? Don't exactly need this as programmers can compare the event.keyCode to KeyCode.VK_W
 [ ] Maybe something in JSON to automate creation of some Entities
-[ ] Localization
 [ ] Localization?
 [ ] Networking
+
+
+TODO
+Double Buffering
+Multithreading
+New Blueprint class? Just to make new entities, doesn't store the ID so it randomly generates them
+Test Dependency System
+Breakout
+Circle Rendering
+~Sprite Rendering
+Narrow Circle to Rectangle Collisions
+Stop double Events for each Collision
+~Sound System
+~Animation System
+~Update System
+
+
+NEED
+[/] Double Buffering
+[/] Circle Rendering
+[~] Catch duplicate Events for Collisions (Each Collider will see the Collision so will send
+the Event -> Could have an EventQueue or something which holds the Events sent
+in the current tick, so can check if an event with the same two Colliders has already
+been sent previously(Just the opposite way around)) -- Maybe done now. Queue is sent at the end of every update frame
+[ ] Breakout
+[/] Differentiating between buttons in MouseClickEvent(Just needs to hold a variable)
+[ ] GameState system
+[ ] ~Multithreading -> Mainly for Events to be faster.
+[ ] ~Maybe a ShapeRenderComponent class which can take any shape?
