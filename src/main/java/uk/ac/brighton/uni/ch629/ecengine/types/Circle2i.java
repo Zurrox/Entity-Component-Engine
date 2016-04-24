@@ -7,4 +7,9 @@ public class Circle2i extends Vector2i {
         super(x, y);
         this.radius = radius;
     }
+
+    public Circle2i(final Vector2i pos, final int radius) {
+        super(pos.x, pos.y);
+        this.radius = radius;
+    }
 }

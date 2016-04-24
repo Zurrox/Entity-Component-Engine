@@ -19,6 +19,11 @@ public class Vector2i {
         this.y = y;
     }
 
+    public void setPos(Vector2i pos) {
+        this.x = pos.x;
+        this.y = pos.y;
+    }
+
     public void move(final double x, final double y) {//TODO: Maybe use Translate instead.
         this.x += x;
         this.y += y;
@@ -27,6 +32,14 @@ public class Vector2i {
     public void move(final Vector2i pos) {
         this.x += pos.x;
         this.y += pos.y;
+    }
+
+    public Vector2i offset(int x, int y) {
+        return new Vector2i(this.x + x, this.y + y);
+    }
+
+    public Vector2i offset(Vector2i off) {
+        return offset(off.x, off.y);
     }
 
     public double getX() {
