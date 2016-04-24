@@ -1,37 +1,48 @@
 package uk.ac.brighton.uni.ch629.ecengine.component;
 
-import uk.ac.brighton.uni.ch629.ecengine.colliders.ICollider;
 import uk.ac.brighton.uni.ch629.ecengine.entity.Entity;
-import uk.ac.brighton.uni.ch629.ecengine.logic.World;
-import uk.ac.brighton.uni.ch629.ecengine.types.Box2i;
 import uk.ac.brighton.uni.ch629.ecengine.types.Circle2i;
+import uk.ac.brighton.uni.ch629.ecengine.types.Vector2i;
 
-import java.util.UUID;
+import java.awt.*;
 
+
+@ComponentDetails(dependencies = TransformComponent.class, type = ComponentDetails.ComponentType.COLLISION)
 public class CircleCollider extends CollisionComponent {
-    public Circle2i circle;
+    private int radius;
 
     public CircleCollider(Entity parent) {
-        this(parent, 0, 0, 1);
+        this(parent, 1);
     }
 
-    public CircleCollider(Entity parent, int x, int y, int radius) {
+    public CircleCollider(Entity parent, int radius) {
         super(parent);
-        circle = new Circle2i(x, y, radius);
+        this.radius = radius;
     }
 
-    public boolean intersects(ICollider other) { //FIXME: What can I do with this duplicate code?
-        if (other instanceof BoxCollider) return intersects(((BoxCollider) other).box);
-        else if (other instanceof CircleCollider) return intersects(((CircleCollider) other).circle);
-        else return other.intersects(this);
+    public Circle2i getCircle() {
+        return new Circle2i(parent.getTransform().getPos(), radius);
     }
 
-    private boolean intersects(final Box2i otherBox) { //TODO: This is a broad search
-        Box2i box = new Box2i(circle.x - circle.radius, circle.y - circle.radius, circle.radius * 2, circle.radius * 2);
-        return otherBox.intersects(box);
+    public int getRadius() {
+        return radius;
     }
 
-    private boolean intersects(final Circle2i otherCircle) {
-        return circle.getDistance(otherCircle) < circle.radius + otherCircle.radius;
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
+
+    protected boolean intersects(Rectangle rectangle) { //TODO: This is a Broad Search
+        Vector2i pos = parent.getTransform().getPos();
+        Rectangle rect = new Rectangle(pos.x - radius, pos.y - radius, radius * 2, radius * 2);
+        return rect.intersects(rectangle);
+    }
+
+    protected boolean intersects(final Circle2i otherCircle) {
+        return getCircle().getDistance(otherCircle) < radius + otherCircle.radius;
+    }
+
+    @Override
+    public void render(Graphics graphics) {
     }
 }

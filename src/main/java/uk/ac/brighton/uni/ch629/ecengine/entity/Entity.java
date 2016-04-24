@@ -1,6 +1,8 @@
 package uk.ac.brighton.uni.ch629.ecengine.entity;
 
 import uk.ac.brighton.uni.ch629.ecengine.component.Component;
+import uk.ac.brighton.uni.ch629.ecengine.component.ComponentDetails;
+import uk.ac.brighton.uni.ch629.ecengine.component.TransformComponent;
 import uk.ac.brighton.uni.ch629.ecengine.logic.World;
 
 import java.awt.*;
@@ -11,6 +13,7 @@ public class Entity {
     final World WORLD;
     final UUID ID;
     final Set<Component> COMPONENTS;
+    protected TransformComponent transform = new TransformComponent(this); //All Entities should have some sort of positional data, if not they could just be zero.
 
     public Entity(World world) {
         this(world, UUID.randomUUID());
@@ -18,6 +21,7 @@ public class Entity {
 
     public Entity(World world, Component... comps) {
         this(world);
+        COMPONENTS.add(transform);
         COMPONENTS.addAll(Arrays.asList(comps));
     }
 
@@ -49,6 +53,17 @@ public class Entity {
     }
 
     public void addComponent(Class<? extends Component> component) {
+        if (component.isAnnotationPresent(ComponentDetails.class)) {
+            ComponentDetails details = component.getAnnotation(ComponentDetails.class);
+            Class<? extends Component>[] dependencies = details.dependencies();
+            if (dependencies.length > 0) {
+                for (Class clazz : dependencies) {
+                    if (!hasComponent(clazz))
+                        return; //TODO: Throw Dependency Exception -- Doesn't have the dependent component
+                }
+            }
+        }
+
         if (!hasComponent(component)) try {
             COMPONENTS.add(component.newInstance());
         } catch (InstantiationException e) {
@@ -64,6 +79,18 @@ public class Entity {
     }
 
     public boolean removeComponent(Class<? extends Component> component) {
+        for (Component comp : COMPONENTS) {
+            if (comp.getClass().isAnnotationPresent(ComponentDetails.class)) {
+                ComponentDetails details = comp.getClass().getAnnotation(ComponentDetails.class);
+                if (details.dependencies().length > 0) {
+                    for (Class<? extends Component> clazz : details.dependencies()) {
+                        if (clazz == component)
+                            return false; //TODO: Another Component depends on this one. -> Could have another parameter which says to remove dependant Components
+                    }
+                }
+            }
+        }
+
         Iterator<Component> itr = COMPONENTS.iterator();
         while (itr.hasNext()) {
             if (itr.next().getClass() == component) {
@@ -93,7 +120,7 @@ public class Entity {
         return null; //TODO: Implement
     }
 
-    public void update(int deltaTime) {
+    public void update(double deltaTime) {
         for (Component component : COMPONENTS) component.update(deltaTime);
     }
 
@@ -107,5 +134,9 @@ public class Entity {
 
     public World getWorld() {
         return WORLD;
+    }
+
+    public TransformComponent getTransform() {
+        return transform;
     }
 }
