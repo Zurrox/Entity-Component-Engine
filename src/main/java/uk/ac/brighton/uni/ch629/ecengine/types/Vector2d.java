@@ -61,4 +61,8 @@ public class Vector2d {
     public double getDistance(Vector2d other) {
         return Math.sqrt((this.x - other.x) * (this.x - other.x) + (this.y - other.y) * (this.y - other.y));
     }
+
+    public Vector2d getDifference(Vector2d other) {
+        return new Vector2d(Math.abs(other.x - x), Math.abs(other.y - y));
+    }
 }

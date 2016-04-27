@@ -30,6 +30,14 @@ public class BoxCollider extends CollisionComponent {
         this.height = height;
     }
 
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
     public Rectangle2D getRectangle() {
         Vector2d pos = parent.getTransform().getPos();
         return new Rectangle2D.Double(pos.x + offset.x, pos.y + offset.y, width, height);
