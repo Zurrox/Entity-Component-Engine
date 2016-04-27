@@ -14,6 +14,7 @@ public class Entity {
     final UUID ID;
     final Set<Component> COMPONENTS;
     protected TransformComponent transform = new TransformComponent(this); //All Entities should have some sort of positional data, if not they could just be zero.
+    String tag = "GameObject";
 
     public Entity(World world) {
         this(world, UUID.randomUUID());
@@ -45,7 +46,15 @@ public class Entity {
     public Entity(final World world, final UUID id) {
         this.WORLD = world;
         this.ID = id;
-        COMPONENTS = new HashSet<Component>();
+        COMPONENTS = new HashSet<>();
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     public void addComponent(Component component) {
@@ -121,10 +130,13 @@ public class Entity {
     }
 
     public void update(double deltaTime) {
-        for (Component component : COMPONENTS) component.update(deltaTime);
+        for (Component component : COMPONENTS) {
+            if (component.getWaitFrames() == 0) component.update(deltaTime);
+            else component.decreaseWaitFrames();
+        }
     }
 
-    public void render(Graphics graphics) {
+    public void render(Graphics2D graphics) {
         for(Component component : COMPONENTS) component.render(graphics);
     }
 
@@ -138,5 +150,11 @@ public class Entity {
 
     public TransformComponent getTransform() {
         return transform;
+    }
+
+    public void kill() {
+        for (Component component : COMPONENTS) component.kill();
+        COMPONENTS.clear();
+        WORLD.removeEntity(ID);
     }
 }

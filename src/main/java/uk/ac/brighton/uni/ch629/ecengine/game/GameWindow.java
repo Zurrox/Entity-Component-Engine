@@ -114,7 +114,7 @@ public abstract class GameWindow extends JFrame {
                         offBuffer = createImage(getWidth(), getHeight());
                         update(TIMER.getDeltaTimeMilli());
                         currentWorld.EVENT_BUS.sendQueued(); //FIXME: IDK If this is where it should be, but it will send all queued events at the end of all updates in the current frame
-                        render(offBuffer.getGraphics());
+                        render((Graphics2D) offBuffer.getGraphics());
                         getCurrentBuffer().drawImage(offBuffer, 0, 0, getContentPane());
                     }
                 });
@@ -150,7 +150,7 @@ public abstract class GameWindow extends JFrame {
         if (!state.isPaused()) state.update(deltaTime);
     }
 
-    public void render(Graphics g) {
+    public void render(Graphics2D g) {
         GameState state = STATE_LIST.get(currentState);
         if (!state.isPaused()) state.render(g);
     }

@@ -1,21 +1,21 @@
 package uk.ac.brighton.uni.ch629.ecengine.component;
 
 import uk.ac.brighton.uni.ch629.ecengine.entity.Entity;
-import uk.ac.brighton.uni.ch629.ecengine.types.Box2i;
-import uk.ac.brighton.uni.ch629.ecengine.types.Vector2i;
+import uk.ac.brighton.uni.ch629.ecengine.types.Vector2d;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 @ComponentDetails(dependencies = TransformComponent.class, type = ComponentDetails.ComponentType.RENDER)
 public class BoxRenderComponent extends Component {
-    private Vector2i offset = Vector2i.zero;
-    private int width = 1, height = 1;
+    private Vector2d offset = Vector2d.zero;
+    private double width = 1, height = 1;
 
     public BoxRenderComponent(Entity parent) {
         super(parent);
     }
 
-    public BoxRenderComponent(Entity parent, int width, int height) {
+    public BoxRenderComponent(Entity parent, double width, double height) {
         this(parent);
         this.width = width;
         this.height = height;
@@ -25,33 +25,29 @@ public class BoxRenderComponent extends Component {
 
     }
 
-    public Box2i getBox() {
-        return new Box2i(parent.getTransform().getPos(), width, height);
+    public Rectangle2D getRectangle() {
+        Vector2d pos = parent.getTransform().getPos();
+        return new Rectangle2D.Double(pos.x + offset.x, pos.y + offset.y, width, height);
     }
 
-    public Rectangle getRectangle() {
-        Vector2i pos = parent.getTransform().getPos();
-        return new Rectangle(pos.x, pos.y, width, height);
-    }
-
-    public void setSize(int width, int height) {
+    public void setSize(double width, double height) {
         this.width = width;
         this.height = height;
     }
 
-    public Vector2i getSize() {
-        return new Vector2i(width, height);
+    public Vector2d getSize() {
+        return new Vector2d(width, height);
     }
 
-    public int getWidth() {
+    public double getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(double width) {
         this.width = width;
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return height;
     }
 
@@ -59,8 +55,7 @@ public class BoxRenderComponent extends Component {
         this.height = height;
     }
 
-    public void render(Graphics graphics) {
-        Box2i box = getBox();
-        graphics.fillRect(box.x + offset.x, box.y + offset.y, box.width, box.height);
+    public void render(Graphics2D graphics) {
+        graphics.fill(getRectangle());
     }
 }

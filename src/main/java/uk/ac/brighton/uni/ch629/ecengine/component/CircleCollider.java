@@ -1,10 +1,11 @@
 package uk.ac.brighton.uni.ch629.ecengine.component;
 
 import uk.ac.brighton.uni.ch629.ecengine.entity.Entity;
-import uk.ac.brighton.uni.ch629.ecengine.types.Circle2i;
-import uk.ac.brighton.uni.ch629.ecengine.types.Vector2i;
+import uk.ac.brighton.uni.ch629.ecengine.types.Vector2d;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 
 
 @ComponentDetails(dependencies = TransformComponent.class, type = ComponentDetails.ComponentType.COLLISION)
@@ -20,8 +21,9 @@ public class CircleCollider extends CollisionComponent {
         this.radius = radius;
     }
 
-    public Circle2i getCircle() {
-        return new Circle2i(parent.getTransform().getPos(), radius);
+    public Ellipse2D getEllipse() {
+        Vector2d pos = parent.getTransform().getPos();
+        return new Ellipse2D.Double(pos.x + offset.x, pos.y + offset.y, radius * 2, radius * 2);
     }
 
     public int getRadius() {
@@ -32,17 +34,15 @@ public class CircleCollider extends CollisionComponent {
         this.radius = radius;
     }
 
-    protected boolean intersects(Rectangle rectangle) { //TODO: This is a Broad Search
-        Vector2i pos = parent.getTransform().getPos();
-        Rectangle rect = new Rectangle(pos.x - radius, pos.y - radius, radius * 2, radius * 2);
-        return rect.intersects(rectangle);
+    protected boolean intersects(Rectangle2D rectangle) {
+        return getEllipse().intersects(rectangle);
     }
 
-    protected boolean intersects(final Circle2i otherCircle) {
-        return getCircle().getDistance(otherCircle) < radius + otherCircle.radius;
+    protected boolean intersects(Ellipse2D otherCircle) {
+        return false; //TODO: IMPLEMENT
     }
 
     @Override
-    public void render(Graphics graphics) {
+    public void render(Graphics2D graphics) {
     }
 }

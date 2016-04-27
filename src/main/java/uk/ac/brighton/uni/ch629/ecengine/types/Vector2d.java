@@ -1,44 +1,44 @@
 package uk.ac.brighton.uni.ch629.ecengine.types;
 
-public class Vector2i {
-    public static final Vector2i zero = new Vector2i(0, 0);
-    public int x, y;
+public class Vector2d {
+    public static final Vector2d zero = new Vector2d(0, 0);
+    public double x, y;
 
-    public Vector2i(final int x, int y) {
+    public Vector2d(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
-    public Vector2i() {
+    public Vector2d() {
         this.x = 0;
         this.y = 0;
     }
 
-    public void setPos(final int x, final int y) {
+    public void setPos(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
-    public void setPos(Vector2i pos) {
+    public void setPos(Vector2d pos) {
         this.x = pos.x;
         this.y = pos.y;
     }
 
-    public void move(final double x, final double y) {//TODO: Maybe use Translate instead.
+    public void move(double x, double y) {//TODO: Maybe use Translate instead.
         this.x += x;
         this.y += y;
     }
 
-    public void move(final Vector2i pos) {
+    public void move(Vector2d pos) {
         this.x += pos.x;
         this.y += pos.y;
     }
 
-    public Vector2i offset(int x, int y) {
-        return new Vector2i(this.x + x, this.y + y);
+    public Vector2d offset(double x, double y) {
+        return new Vector2d(this.x + x, this.y + y);
     }
 
-    public Vector2i offset(Vector2i off) {
+    public Vector2d offset(Vector2d off) {
         return offset(off.x, off.y);
     }
 
@@ -46,7 +46,7 @@ public class Vector2i {
         return x;
     }
 
-    public void setX(final int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
@@ -54,11 +54,11 @@ public class Vector2i {
         return y;
     }
 
-    public void setY(final int y) {
+    public void setY(double y) {
         this.y = y;
     }
 
-    public double getDistance(final Vector2i other) {
+    public double getDistance(Vector2d other) {
         return Math.sqrt((this.x - other.x) * (this.x - other.x) + (this.y - other.y) * (this.y - other.y));
     }
 }

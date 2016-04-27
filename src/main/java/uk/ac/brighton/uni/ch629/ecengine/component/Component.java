@@ -11,6 +11,7 @@ import java.util.Observable;
  */
 public abstract class Component extends Observable {
     protected final Entity parent;
+    private int waitFrames = 0;
 
     public Component(Entity parent) {
         this.parent = parent;
@@ -45,11 +46,27 @@ public abstract class Component extends Observable {
         return parent.getWorld();
     }
 
+    public void wait(int frames) {
+        waitFrames += frames;
+    }
+
+    public int getWaitFrames() {
+        return waitFrames;
+    }
+
+    public void decreaseWaitFrames() {
+        if (waitFrames > 0) waitFrames -= 1;
+    }
+
     /**
      * Update the Component
      *
      * @param deltaTime The Delta Time since the last frame.
      */
     public abstract void update(double deltaTime);
-    public abstract void render(Graphics graphics);
+
+    public abstract void render(Graphics2D graphics);
+
+    public void kill() {
+    }
 }

@@ -2,6 +2,7 @@ package uk.ac.brighton.uni.ch629.ecengine.component;
 
 import uk.ac.brighton.uni.ch629.ecengine.entity.Entity;
 import uk.ac.brighton.uni.ch629.ecengine.event.CollisionEvent;
+import uk.ac.brighton.uni.ch629.ecengine.event.EntityKillEvent;
 import uk.ac.brighton.uni.ch629.ecengine.event.SubscribeEvent;
 import uk.ac.brighton.uni.ch629.ecengine.event.SubscriptionClass;
 
@@ -16,14 +17,6 @@ public class HealthComponent extends Component {
         this(parent, 100);
     }
 
-    public void update(double deltaTime) {
-
-    }
-
-    public void render(Graphics graphics) {
-
-    }
-
     public HealthComponent(Entity parent, int maxHealth) {
         this(parent, maxHealth, maxHealth);
     }
@@ -36,6 +29,14 @@ public class HealthComponent extends Component {
         subClass.subscribe(this);
     }
 
+    public void update(double deltaTime) {
+
+    }
+
+    public void render(Graphics2D graphics) {
+
+    }
+
     public int getHealth() {
         return health;
     }
@@ -46,12 +47,18 @@ public class HealthComponent extends Component {
 
     @SubscribeEvent
     public void onHit(CollisionEvent collisionEvent) {
+        if (collisionEvent.entity1 != parent.getID() && collisionEvent.entity2 != parent.getID()) return;
         UUID other;
         if (collisionEvent.entity1.equals(parent.getID())) other = collisionEvent.entity2;
         else other = collisionEvent.entity1;
         if (getWorld().hasComponent(other, DamageComponent.class)) {
             DamageComponent dc = getWorld().getComponent(other, DamageComponent.class);
             health -= dc.getDamage();
+        }
+
+        if (health == 0) {
+            parent.getWorld().EVENT_BUS.sendNow(new EntityKillEvent(parent.getID()));
+            parent.kill();
         }
     }
 }

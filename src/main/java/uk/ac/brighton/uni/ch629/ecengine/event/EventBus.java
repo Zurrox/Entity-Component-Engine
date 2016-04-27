@@ -1,7 +1,5 @@
 package uk.ac.brighton.uni.ch629.ecengine.event;
 
-import uk.ac.brighton.uni.ch629.ecengine.misc.Debug;
-
 import java.awt.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -19,8 +17,8 @@ public class EventBus {
     java.util.List<IEvent> eventQueue;
 
     public EventBus() {
-        subscribedClasses = new HashMap<Class, SubscriptionClass>();
-        eventQueue = new ArrayList<IEvent>();
+        subscribedClasses = new HashMap<>();
+        eventQueue = new ArrayList<>();
     }
 
     public <T> SubscriptionClass<T> registerListenerClass(Class<T> clazz) {
@@ -76,7 +74,6 @@ public class EventBus {
 
     public synchronized void sendToQueue(IEvent event) {
         for (IEvent event1 : eventQueue) if (event1.equals(event)) return;
-        Debug.println("EVENT ADDED TO QUEUE");
         eventQueue.add(event);
     }
 

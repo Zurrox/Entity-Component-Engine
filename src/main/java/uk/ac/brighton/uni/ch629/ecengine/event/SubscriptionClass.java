@@ -43,7 +43,7 @@ public class SubscriptionClass<T> {
     public synchronized void addMethod(Class<? extends IEvent> event, Method mtd) {
         Set<Method> mtds;
         if (methods.containsKey(event.getSimpleName())) mtds = methods.get(event.getSimpleName());
-        else mtds = new HashSet<Method>();
+        else mtds = new HashSet<>();
         mtds.add(mtd);
         methods.put(event.getSimpleName(), mtds);
     }

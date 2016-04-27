@@ -41,3 +41,4 @@ public class ECEngine extends GameWindow {
 //TODO: Component Dependencies (Box Collider requires Transform)
 //TODO: Make all Updates use Double
 //TODO: Overlays? Pause Menu -> Needs to pause main game when opened.
+//TODO: Update Systems to use AWT/Swing's shapes, like Oval and Rectangle rather than Box2i and Circl2i

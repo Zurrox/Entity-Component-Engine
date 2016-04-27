@@ -10,6 +10,7 @@ import uk.ac.brighton.uni.ch629.ecengine.physics.CollisionHandler;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A class to hold all Entities for the current instance. This World runs all Events &amp; Collisions for the set of
@@ -27,7 +28,7 @@ public class World {
         this.WINDOW = window;
         EVENT_BUS = new EventBus();
         COLLISION_HANDLER = new CollisionHandler();
-        entities = new HashMap<UUID, Entity>();
+        entities = new HashMap<>();
         id = UUID.randomUUID();
     }
 
@@ -41,11 +42,11 @@ public class World {
         for (Entity entity : entities.values()) entity.update(deltaTime);
     }
 
-    public void renderAll(Graphics graphics) {
+    public void renderAll(Graphics2D graphics) {
         for(Entity entity : entities.values()) entity.render(graphics);
     }
 
-    public void render(UUID entityID, Graphics graphics) {
+    public void render(UUID entityID, Graphics2D graphics) {
         Entity entity = entities.get(entityID);
         if(entity != null) entity.render(graphics);
     }
@@ -72,8 +73,7 @@ public class World {
      * @return A list of Components held by the set Entity
      */
     public Set<Component> getComponents(UUID entity) {
-        if (entities.containsKey(entity)) return entities.get(entity).getComponents();
-        else return null;
+        return entities.containsKey(entity) ? entities.get(entity).getComponents() : null;
     }
 
     /**
@@ -146,9 +146,7 @@ public class World {
      */
     public void addComponent(UUID entityID, Class<? extends Component> component) throws DuplicateComponentException {
         Entity entity = entities.get(entityID);
-        if (entity != null) {
-            entity.addComponent(component);
-        }
+        if (entity != null) entity.addComponent(component);
     }
 
     /**
@@ -159,8 +157,15 @@ public class World {
      */
     public boolean removeComponent(UUID entityID, Class<? extends Component> compClass) { //TODO: Maybe NoComponentException or something
         Entity entity = entities.get(entityID);
-        if (entity != null) return entity.removeComponent(compClass);
-        return false;
+        return entity != null && entity.removeComponent(compClass);
+    }
+
+    public void removeEntity(UUID entity) {
+        entities.remove(entity);
+    }
+
+    public List<Entity> getEntitiesWithTag(String tag) {
+        return entities.values().stream().filter(e -> e.getTag().equalsIgnoreCase(tag)).collect(Collectors.toList());
     }
 
     /**

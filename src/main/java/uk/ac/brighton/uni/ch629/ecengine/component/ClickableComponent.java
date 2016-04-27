@@ -13,7 +13,7 @@ public class ClickableComponent extends Component {
 
     }
 
-    public void render(Graphics graphics) {
+    public void render(Graphics2D graphics) {
 
     }
 }

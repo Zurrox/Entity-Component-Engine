@@ -11,17 +11,17 @@ public class DamageComponent extends Component {
         this(parent, 1);
     }
 
+    public DamageComponent(Entity parent, int damage) {
+        super(parent);
+        setDamage(damage);
+    }
+
     public void update(double deltaTime) {
 
     }
 
-    public void render(Graphics graphics) {
+    public void render(Graphics2D graphics) {
 
-    }
-
-    public DamageComponent(Entity parent, int damage) {
-        super(parent);
-        setDamage(damage);
     }
 
     public int getDamage() {
