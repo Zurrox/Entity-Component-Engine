@@ -31,8 +31,16 @@ public class VelocityComponent extends Component {
 
     }
 
-    public void inverse() {
+    public void invert() {
         vel = new Vector2d(vel.x * (-1), vel.y * (-1));
+    }
+
+    public void invertX() {
+        vel = new Vector2d(-1 * vel.x, vel.y);
+    }
+
+    public void invertY() {
+        vel = new Vector2d(vel.x, -1 * vel.y);
     }
 
     public Vector2d getVelocity() {

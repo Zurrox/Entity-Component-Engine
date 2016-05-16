@@ -56,6 +56,7 @@ public class BoxRenderComponent extends Component {
     }
 
     public void render(Graphics2D graphics) {
+        graphics.setColor(color);
         graphics.fill(getRectangle());
     }
 }

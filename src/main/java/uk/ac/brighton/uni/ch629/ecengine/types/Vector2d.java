@@ -65,4 +65,14 @@ public class Vector2d {
     public Vector2d getDifference(Vector2d other) {
         return new Vector2d(Math.abs(other.x - x), Math.abs(other.y - y));
     }
+
+    public void multiply(double amount) {
+        this.x *= amount;
+        this.y *= amount;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Vector2d(%f, %f)", x, y);
+    }
 }

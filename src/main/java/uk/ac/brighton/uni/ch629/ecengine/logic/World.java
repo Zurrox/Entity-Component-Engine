@@ -21,7 +21,8 @@ public class World {
     public final CollisionHandler COLLISION_HANDLER;
     public final GameWindow WINDOW;
     //TODO: Maybe use an Entity class to hold components, can make blueprints through that. Can also have Tags, ie to know which Entity is the Player
-    public HashMap<UUID, Entity> entities;
+    public final HashMap<UUID, Entity> entities;
+    public Set<Entity> entitiesToAdd = new HashSet<>();
     UUID id;
 
     public World(final GameWindow window) {
@@ -37,9 +38,16 @@ public class World {
      *
      * @param deltaTime The Delta Time since the last update frame
      */
-    public void updateAll(int deltaTime) {
+    public void updateAll(double deltaTime) {
         //TODO: Could use an instance of Time within the GameWindow which can then be used to get the deltaTime value
-        for (Entity entity : entities.values()) entity.update(deltaTime);
+        for (Entity entity : entities.values()) if(!entity.dead) entity.update(deltaTime);
+//        Iterator<Entity> itr = entities.values().iterator();
+//        while(itr.hasNext()) if(itr.next().dead) itr.remove();
+    }
+
+    public boolean hasEntity(UUID entityID) {
+        for(Entity entity : entities.values()) if(entity.getID().equals(entityID)) return true;
+        return false;
     }
 
     public void renderAll(Graphics2D graphics) {
@@ -63,7 +71,12 @@ public class World {
     }
 
     public void addEntity(Entity entity) {
-        if (!entities.containsKey(entity.getID())) entities.put(entity.getID(), entity);
+        if (!entities.containsKey(entity.getID()) && !entitiesToAdd.contains(entity)) entitiesToAdd.add(entity);
+    }
+
+    public void addAllEntities() {
+        for(Entity entity : entitiesToAdd) entities.put(entity.getID(), entity);
+        entitiesToAdd.clear();
     }
 
     /**

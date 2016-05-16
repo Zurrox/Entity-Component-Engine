@@ -1,6 +1,6 @@
 package uk.ac.brighton.uni.ch629.ecengine.game;
 
-import uk.ac.brighton.uni.ch629.ecengine.TestListener;
+import uk.ac.brighton.uni.ch629.ecengine.entity.Entity;
 import uk.ac.brighton.uni.ch629.ecengine.event.EventBus;
 import uk.ac.brighton.uni.ch629.ecengine.event.MouseClickEvent;
 import uk.ac.brighton.uni.ch629.ecengine.event.MouseScrollEvent;
@@ -13,8 +13,7 @@ import uk.ac.brighton.uni.ch629.ecengine.misc.Settings;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -59,8 +58,6 @@ public abstract class GameWindow extends JFrame {
 
         SETTINGS.setSetting("resources", "D:\\Programming\\Entity Component Engine\\Resources");
 
-        TestListener tl = new TestListener(eventBus);
-
         //TODO: Add the other Listener events & Maybe find a more elegant way to do this.
         addKeyListener(new KeyListener() {
             public void keyTyped(KeyEvent e) {
@@ -97,31 +94,47 @@ public abstract class GameWindow extends JFrame {
             }
         });
 
-        addMouseWheelListener(new MouseWheelListener() {
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                eventBus.sendNow(new MouseScrollEvent(e.getPoint(), e.getWheelRotation()));
-            }
-        });
+        addMouseWheelListener(e -> eventBus.sendNow(new MouseScrollEvent(e.getPoint(), e.getWheelRotation())));
 
         initialize();
 
         //TODO: Threading. Game loop needs to be in own thread, and events need to be separated
 
-        Thread thread = new Thread(new Runnable() {
-            public void run() {
-                javax.swing.Timer tim = new javax.swing.Timer(1000 / 60, new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        offBuffer = createImage(getWidth(), getHeight());
-                        update(TIMER.getDeltaTimeMilli());
-                        currentWorld.EVENT_BUS.sendQueued(); //FIXME: IDK If this is where it should be, but it will send all queued events at the end of all updates in the current frame
-                        render((Graphics2D) offBuffer.getGraphics());
-                        getCurrentBuffer().drawImage(offBuffer, 0, 0, getContentPane());
-                    }
-                });
-                tim.start();
-            }
+        Thread thread = new Thread(() -> {
+            javax.swing.Timer tim = new javax.swing.Timer(1000 / 60, e -> {
+                offBuffer = createImage(getWidth(), getHeight());
+                update(TIMER.getDeltaTimeMilli());
+                currentWorld.EVENT_BUS.sendQueued();
+                killEntities();
+                currentWorld.addAllEntities();
+                currentWorld.COLLISION_HANDLER.addAllColliders();
+                render((Graphics2D) offBuffer.getGraphics());
+                getCurrentBuffer().drawImage(offBuffer, 0, 0, getContentPane());
+            });
+            tim.start();
         });
         thread.start();
+    }
+
+    public void killEntities() {
+        /*synchronized (currentWorld.entities) {
+            for (Iterator<Map.Entry<UUID, Entity>> it = currentWorld.entities.entrySet().iterator(); it.hasNext(); ) {
+                Map.Entry<UUID, Entity> value = it.next();
+                if (value.getValue().dead) {
+                    value.getValue().kill();
+                    it.remove();
+                }
+            }
+        }*/
+
+        Iterator<Entity> itr = currentWorld.entities.values().iterator();
+        while(itr.hasNext()) {
+            Entity entity = itr.next();
+            if(entity.dead) {
+                entity.kill();
+                itr.remove();
+            }
+        }
     }
 
     private Graphics getCurrentBuffer() {

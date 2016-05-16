@@ -2,12 +2,10 @@ package uk.ac.brighton.uni.ch629.ecengine.component;
 
 import uk.ac.brighton.uni.ch629.ecengine.entity.Entity;
 import uk.ac.brighton.uni.ch629.ecengine.event.CollisionEvent;
-import uk.ac.brighton.uni.ch629.ecengine.event.EntityKillEvent;
 import uk.ac.brighton.uni.ch629.ecengine.event.SubscribeEvent;
 import uk.ac.brighton.uni.ch629.ecengine.event.SubscriptionClass;
 
 import java.awt.*;
-import java.util.UUID;
 
 public class HealthComponent extends Component {
     private int health, maxHealth;
@@ -47,18 +45,14 @@ public class HealthComponent extends Component {
 
     @SubscribeEvent
     public void onHit(CollisionEvent collisionEvent) {
-        if (collisionEvent.entity1 != parent.getID() && collisionEvent.entity2 != parent.getID()) return;
-        UUID other;
-        if (collisionEvent.entity1.equals(parent.getID())) other = collisionEvent.entity2;
+        if (collisionEvent.entity1.getID() != parent.getID() && collisionEvent.entity2.getID() != parent.getID()) return;
+        Entity other;
+        if (collisionEvent.entity1.equals(parent)) other = collisionEvent.entity2;
         else other = collisionEvent.entity1;
-        if (getWorld().hasComponent(other, DamageComponent.class)) {
-            DamageComponent dc = getWorld().getComponent(other, DamageComponent.class);
-            health -= dc.getDamage();
-        }
+        if (other.hasComponent(DamageComponent.class)) health -= other.getComponent(DamageComponent.class).getDamage();
 
         if (health == 0) {
-            parent.getWorld().EVENT_BUS.sendNow(new EntityKillEvent(parent.getID()));
-            parent.kill();
+            parent.setDead(true);
         }
     }
 }

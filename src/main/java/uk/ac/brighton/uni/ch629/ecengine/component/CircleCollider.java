@@ -21,6 +21,11 @@ public class CircleCollider extends CollisionComponent {
         this.radius = radius;
     }
 
+    public CircleCollider(Entity parent, boolean trigger, int radius) {
+        this(parent, radius);
+        setSolid(trigger);
+    }
+
     public Ellipse2D getEllipse() {
         Vector2d pos = parent.getTransform().getPos();
         return new Ellipse2D.Double(pos.x + offset.x, pos.y + offset.y, radius * 2, radius * 2);

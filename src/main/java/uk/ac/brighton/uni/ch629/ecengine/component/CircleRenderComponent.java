@@ -37,6 +37,7 @@ public class CircleRenderComponent extends Component {
     }
 
     public void render(Graphics2D graphics) {
+        graphics.setColor(color);
         graphics.fill(getEllipse());
     }
 }

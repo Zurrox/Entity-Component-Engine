@@ -3,9 +3,12 @@ package uk.ac.brighton.uni.ch629.ecengine.entity;
 import uk.ac.brighton.uni.ch629.ecengine.component.Component;
 import uk.ac.brighton.uni.ch629.ecengine.component.ComponentDetails;
 import uk.ac.brighton.uni.ch629.ecengine.component.TransformComponent;
+import uk.ac.brighton.uni.ch629.ecengine.event.EntityKillEvent;
 import uk.ac.brighton.uni.ch629.ecengine.logic.World;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
@@ -15,6 +18,8 @@ public class Entity {
     final Set<Component> COMPONENTS;
     protected TransformComponent transform = new TransformComponent(this); //All Entities should have some sort of positional data, if not they could just be zero.
     String tag = "GameObject";
+    ActionListener killListener;
+    public boolean dead = false;
 
     public Entity(World world) {
         this(world, UUID.randomUUID());
@@ -31,13 +36,7 @@ public class Entity {
         for (Class<? extends Component> comp : comps) {
             try {
                 COMPONENTS.add(comp.getDeclaredConstructor(Entity.class).newInstance(this));
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 e.printStackTrace();
             }
         }
@@ -49,14 +48,26 @@ public class Entity {
         COMPONENTS = new HashSet<>();
     }
 
+    /**
+     * Gets the tag of the Entity
+     * @return The tag of the Entity
+     */
     public String getTag() {
         return tag;
     }
 
+    /**
+     * Sets the tag of the Entity
+     * @param tag The new tag
+     */
     public void setTag(String tag) {
         this.tag = tag;
     }
 
+    /**
+     * Add a Component to the Entity
+     * @param component The new Component for the Entity
+     */
     public void addComponent(Component component) {
         if (!hasComponent(component.getClass())) COMPONENTS.add(component);
     }
@@ -75,9 +86,7 @@ public class Entity {
 
         if (!hasComponent(component)) try {
             COMPONENTS.add(component.newInstance());
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
@@ -153,8 +162,23 @@ public class Entity {
     }
 
     public void kill() {
+        if(killListener != null) killListener.actionPerformed(new ActionEvent(this, -1, null));
         for (Component component : COMPONENTS) component.kill();
+        WORLD.EVENT_BUS.sendToQueue(new EntityKillEvent(this));
         COMPONENTS.clear();
-        WORLD.removeEntity(ID);
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
+    }
+
+    public void onKill(ActionListener listener) {
+        killListener = listener;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Entity) return ((Entity)obj).getID().equals(getID());
+        return false;
     }
 }

@@ -22,6 +22,11 @@ public class BoxCollider extends CollisionComponent {
         this.height = height;
     }
 
+    public BoxCollider(Entity parent, boolean trigger, double width, double height) {
+        this(parent, width, height);
+        setSolid(trigger);
+    }
+
     public void initialize() {
     }
 

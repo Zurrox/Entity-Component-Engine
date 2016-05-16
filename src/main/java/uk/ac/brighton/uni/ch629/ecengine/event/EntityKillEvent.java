@@ -1,11 +1,11 @@
 package uk.ac.brighton.uni.ch629.ecengine.event;
 
-import java.util.UUID;
+import uk.ac.brighton.uni.ch629.ecengine.entity.Entity;
 
 public class EntityKillEvent implements IEvent {
-    public UUID entity;
+    public Entity entity;
 
-    public EntityKillEvent(UUID entity) {
+    public EntityKillEvent(Entity entity) {
         this.entity = entity;
     }
 }

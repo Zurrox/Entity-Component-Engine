@@ -13,9 +13,10 @@ public class CollisionHandler {
      * A list of all Colliders in the game
      */
     public final Set<CollisionComponent> colliders;
+    public final Set<CollisionComponent> collidersToAdd = new HashSet<>();
 
     public CollisionHandler() {
-        colliders = new HashSet<CollisionComponent>();
+        colliders = new HashSet<>();
     }
 
     /**
@@ -24,7 +25,12 @@ public class CollisionHandler {
      * @param collider - Collider Component to be added
      */
     public void addCollider(CollisionComponent collider) {
-        if (!colliders.contains(collider)) colliders.add(collider);
+        if (!colliders.contains(collider) && !collidersToAdd.contains(collider)) collidersToAdd.add(collider);
+    }
+
+    public void addAllColliders() {
+        for(CollisionComponent collider : collidersToAdd) colliders.add(collider);
+        collidersToAdd.clear();
     }
 
     /**
